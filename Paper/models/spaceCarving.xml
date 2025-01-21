@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.6//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_6.dtd'>
+<nta>
+	<declaration>// Place global declarations here.
+int [0,1] mask[3][3][3] = {{{ 1,1,1 },{ 1,1,1 },{ 1,1,1 }},
+                           {{ 1,1,1 },{ 1,1,1 },{ 1,1,1 }},
+                           {{ 1,1,1 },{ 1,1,1 },{ 1,1,1 }}};
+int [0,2] view[2][3][3][3] = {{{{ 0,0,0 },{ 0,0,0 },{ 0,0,0 }},
+                               {{ 0,0,0 },{ 1,1,1 },{ 0,0,0 }},
+                               {{ 0,0,0 },{ 0,0,0 },{ 0,0,0 }}},
+                              {{{ 0,0,0 },{ 0,0,0 },{ 0,0,0 }},
+                               {{ 1,0,0 },{ 0,1,0 },{ 0,0,1 }},
+                               {{ 0,0,0 },{ 0,0,0 },{ 0,0,0 }}}};
+typedef int[0,2] pos;
+int cost = 0;
+// int flag = 0; // signal thread 2 to get to work...</declaration>
+	<template>
+		<name x="5" y="5">Thread</name>
+		<parameter>const int id</parameter>
+		<declaration>// Place local declarations here.
+pos x1, y1, z1;
+int checked = 0;</declaration>
+		<location id="id0" x="-161" y="-85">
+		</location>
+		<location id="id1" x="-161" y="34">
+		</location>
+		<location id="id2" x="-161" y="-161">
+			<name x="-212" y="-170">Done</name>
+		</location>
+		<init ref="id0"/>
+		<transition id="id3">
+			<source ref="id2"/>
+			<target ref="id2"/>
+			<nail x="-119" y="-161"/>
+			<nail x="-136" y="-195"/>
+		</transition>
+		<transition id="id4">
+			<source ref="id0"/>
+			<target ref="id2"/>
+			<label kind="guard" x="-153" y="-136">checked==27</label>
+		</transition>
+		<transition id="id5">
+			<source ref="id1"/>
+			<target ref="id0"/>
+			<label kind="guard" x="85" y="-51">mask[x1][y1][z1]==0</label>
+			<label kind="assignment" x="85" y="-34">view[id][x1][y1][z1]=2,
+cost = cost + 1</label>
+			<nail x="67" y="34"/>
+			<nail x="67" y="-85"/>
+		</transition>
+		<transition id="id6">
+			<source ref="id1"/>
+			<target ref="id0"/>
+			<label kind="guard" x="-408" y="17">mask[x1][y1][z1]==1</label>
+			<label kind="assignment" x="-416" y="51">mask[x1][y1][z1]=view[id][x1][y1][z1],
+view[id][x1][y1][z1]=2,
+cost = cost + 4</label>
+			<nail x="-246" y="34"/>
+			<nail x="-246" y="-85"/>
+		</transition>
+		<transition id="id7">
+			<source ref="id0"/>
+			<target ref="id1"/>
+			<label kind="select" x="-144" y="-76">x:pos,y:pos,z:pos</label>
+			<label kind="guard" x="-144" y="-59">view[id][x][y][z]&lt;2</label>
+			<label kind="assignment" x="-144" y="-25">x1=x,y1=y,z1=z,
+checked++</label>
+		</transition>
+	</template>
+	<system>// Place template instantiations here.
+T1 = Thread(0);
+T2 = Thread(1);
+// List one or more processes to be composed into a system.
+system T1,T2;
+</system>
+	<queries>
+		<query>
+			<formula>E&lt;&gt;(T1.Done and T2.Done)</formula>
+			<comment/>
+		</query>
+		<query>
+			<formula>E&lt;&gt;(T1.Done and T2.Done and cost &lt; 140)</formula>
+			<comment/>
+		</query>
+	</queries>
+</nta>
