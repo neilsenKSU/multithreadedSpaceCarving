@@ -1,0 +1,6 @@
+Machine speed 2697.474066 Mhz
+Elapsed read time 5327002 cycles =  0.001974811 sec.
+Elapsed processing time 305528212 cycles =  0.113264560 sec.
+Size = 25234
+Elapsed summation time 306606782 cycles =  0.113664404 sec.
+Elapsed write time 308061052 cycles =  0.114203527 sec.
